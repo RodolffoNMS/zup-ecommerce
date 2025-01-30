@@ -6,7 +6,7 @@ import com.zup.ecommerce.models.Client;
 
 public interface ClientService {
 
-    Client creatClient(Client clientToCreate);
+    Client createClient(Client clientToCreate);
     Client findClientById(Long Id);
     List<Client> findAllClient();
    
