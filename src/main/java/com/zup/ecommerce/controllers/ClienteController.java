@@ -26,28 +26,19 @@ public class ClienteController {
         this.clientService = clientService;
     }
 
+    
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client){
-        try {
-            Client createdClient = clientService.creatClient(client);
-            return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Client> createClient(@RequestBody Client client) {
+        Client createdClient = clientService.createClient(client);
+        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
     }
-
-    // Endpoint para buscar um cliente pelo ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable Long id) {
-        try {
-            Client client = clientService.findClientById(id);
-            return new ResponseEntity<>(client, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+        Client client = clientService.findClientById(id);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
-    // Endpoint para listar todos os clientes
     @GetMapping
     public ResponseEntity<List<Client>> getAllClients() {
         List<Client> clients = clientService.findAllClient();
