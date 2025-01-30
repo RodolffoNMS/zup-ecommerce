@@ -18,14 +18,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product productToCreated) {
-        if (productToCreated.getName() == null || productToCreated.getName().isEmpty()) {
+    public Product createProduct(Product productToCreate) {
+        if (productToCreate.getName() == null || productToCreate.getName().isEmpty()) {
             throw new IllegalArgumentException("O nome do proguto não pode ser vazio.");
         }
-        if (productToCreated.getPrice() == null || productToCreated.getPrice() <= 0) {
+        if (productToCreate.getPrice() == null || productToCreate.getPrice() <= 0) {
             throw new IllegalArgumentException("O valor do proguto deve ser maior que zero.");
         }
-        if (productToCreated.getAmount() < 0) {
+        if (productToCreate.getAmount() < 0) {
             throw new IllegalArgumentException("A quantidade desse produto não pode ser negativa.");
         }
         /*
@@ -43,10 +43,10 @@ public class ProductServiceImpl implements ProductService {
          * Lança uma exceção (IllegalArgumentException) com a mensagem "Já existe um produto com este nome.".
         */
         if (productRepository.findAll().stream()
-                .anyMatch(product -> product.getName().equalsIgnoreCase(productToCreated.getName()))) {
+                .anyMatch(product -> product.getName().equalsIgnoreCase(productToCreate.getName()))) {
             throw new IllegalArgumentException("Já existe um produto com este nome.");
         }
-        return productRepository.save(productToCreated);
+        return productRepository.save(productToCreate);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllProduct() {
+    public List<Product> findAllProducts() {
         return productRepository.findAll();
     }
 

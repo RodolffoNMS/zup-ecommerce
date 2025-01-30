@@ -8,5 +8,5 @@ public interface ProductService {
 
     Product createProduct(Product productToCreated);
     Product findProductById(Long id);
-    List<Product> findAllProduct();
+    List<Product> findAllProducts();
 }

@@ -8,6 +8,6 @@ public interface ClientService {
 
     Client createClient(Client clientToCreate);
     Client findClientById(Long Id);
-    List<Client> findAllClient();
+    List<Client> findAllClients();
    
 }
