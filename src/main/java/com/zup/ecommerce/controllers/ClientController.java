@@ -21,14 +21,14 @@ import com.zup.ecommerce.services.ClientService;
 public class ClientController {
 
     private final ClientService clientService;
-
+    
     public ClientController(ClientService clientService){
         this.clientService = clientService;
     }
-
     
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestBody Client client) {
+        
         Client createdClient = clientService.createClient(client);
         return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
     }
