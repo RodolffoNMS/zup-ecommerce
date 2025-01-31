@@ -3,7 +3,7 @@ package com.zup.ecommerce.models;
 import jakarta.persistence.*;
 
 @Entity
-public class Cliente {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,10 +12,10 @@ public class Cliente {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String cpf;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     public String getEmail() {
