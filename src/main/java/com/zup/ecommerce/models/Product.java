@@ -2,6 +2,8 @@ package com.zup.ecommerce.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Product {
 
@@ -13,7 +15,7 @@ public class Product {
     private String name;
 
     @Column(nullable = false, scale = 2)
-    private Double price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private int amount;
@@ -34,11 +36,11 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

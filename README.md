@@ -107,6 +107,7 @@ src/main/java/com/zup/ecommerce
 |-------|-------------------|----------------------------|------------------------|
 |POST   | /api/product      | Cria um novo produto       | 201 (Created)          |
 |GET    | /api/product/{id} | Retorna um produto pelo ID | 200 (OK)               |
+|DELETE | /api/product/{id} | Deleta um produto pelo ID  | 200 (OK)               |
 |GET    | /api/product      | Retorna todos os produtos  | 200 (OK)               |
 ```
 
