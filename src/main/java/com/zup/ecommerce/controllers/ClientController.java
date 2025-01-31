@@ -18,17 +18,17 @@ import com.zup.ecommerce.services.ClientService;
 
 @RestController
 @RequestMapping("api/client")
-public class ClienteController {
+public class ClientController {
 
     private final ClientService clientService;
-
-    public ClienteController(ClientService clientService){
+    
+    public ClientController(ClientService clientService){
         this.clientService = clientService;
     }
-
     
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestBody Client client) {
+        
         Client createdClient = clientService.createClient(client);
         return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
     }
@@ -41,7 +41,7 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity<List<Client>> getAllClients() {
-        List<Client> clients = clientService.findAllClient();
+        List<Client> clients = clientService.findAllClients();
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 }

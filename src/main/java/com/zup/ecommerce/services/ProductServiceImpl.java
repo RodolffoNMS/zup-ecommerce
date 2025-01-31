@@ -2,6 +2,7 @@ package com.zup.ecommerce.services;
 
 import java.util.List;
 
+import com.zup.ecommerce.utils.ValidationUtils;
 import org.springframework.stereotype.Service;
 
 import com.zup.ecommerce.models.Product;
@@ -18,35 +19,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product productToCreated) {
-        if (productToCreated.getName() == null || productToCreated.getName().isEmpty()) {
-            throw new IllegalArgumentException("O nome do proguto não pode ser vazio.");
-        }
-        if (productToCreated.getPrice() == null || productToCreated.getPrice() <= 0) {
-            throw new IllegalArgumentException("O valor do proguto deve ser maior que zero.");
-        }
-        if (productToCreated.getAmount() < 0) {
-            throw new IllegalArgumentException("A quantidade desse produto não pode ser negativa.");
-        }
-        /*
-         * Esse código verifica se já existe um produto com o mesmo nome no repositório antes de criar um novo produto:
-          
-         * productRepository.findAll():Obtém uma lista de todos os produtos armazenados no repositório (banco de dados ou outra fonte de dados).
-          
-         * stream():Converte a lista de produtos em um fluxo (stream), permitindo processar os elementos de forma funcional.
-         
-         * anyMatch(product -> product.getName().equalsIgnoreCase(productToCreate.getName())):
-         * Verifica se algum produto na lista tem o mesmo nome (ignorando maiúsculas e minúsculas) que o produto que está sendo criado (productToCreate).
-         * A função equalsIgnoreCase compara strings sem diferenciar maiúsculas de minúsculas.
-                  
-         * throw new IllegalArgumentException:
-         * Lança uma exceção (IllegalArgumentException) com a mensagem "Já existe um produto com este nome.".
-        */
-        if (productRepository.findAll().stream()
-                .anyMatch(product -> product.getName().equalsIgnoreCase(productToCreated.getName()))) {
+    public Product createProduct(Product productToCreate) {
+        ValidationUtils.validateNotEmpty(productToCreate.getName(), "Nome do Produto");
+        ValidationUtils.validatePositive(productToCreate.getPrice(), "Preço do Produto");
+        ValidationUtils.validateNonNegative(productToCreate.getAmount(), "Quantidade do Produto");
+        if (productRepository.existsByNameIgnoreCase(productToCreate.getName())) {
             throw new IllegalArgumentException("Já existe um produto com este nome.");
         }
-        return productRepository.save(productToCreated);
+        return productRepository.save(productToCreate);
     }
 
     @Override
@@ -56,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllProduct() {
+    public List<Product> findAllProducts() {
         return productRepository.findAll();
     }
 
