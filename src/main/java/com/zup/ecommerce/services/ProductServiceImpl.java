@@ -40,4 +40,13 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
+    @Override
+    public void deleteProductById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException("Produto de id: " + id + " não encontrado.");
+        }
+        productRepository.deleteById(id);
+    }
 }
+
+
