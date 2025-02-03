@@ -2,32 +2,32 @@ package com.zup.ecommerce.services.impl;
 
 import com.zup.ecommerce.dtos.PurchaseRequestDTO;
 import com.zup.ecommerce.models.Client;
-import com.zup.ecommerce.models.Compra;
+import com.zup.ecommerce.models.Purchase;
 import com.zup.ecommerce.models.Product;
 import com.zup.ecommerce.repositories.ClientRepository;
-import com.zup.ecommerce.repositories.CompraRepository;
+import com.zup.ecommerce.repositories.PurchaseRepository;
 import com.zup.ecommerce.repositories.ProductRepository;
-import com.zup.ecommerce.services.CompraService;
+import com.zup.ecommerce.services.PurchaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CompraServiceImpl implements CompraService {
-    private final CompraRepository compraRepository;
+public class PurchaseServiceImpl implements PurchaseService {
+    private final PurchaseRepository purchaseRepository;
     private final ProductRepository productRepository;
     private final ClientRepository clientRepository;
 
 
-    public CompraServiceImpl(CompraRepository compraRepository, ProductRepository productRepository, ClientRepository clientRepository) {
-        this.compraRepository = compraRepository;
+    public PurchaseServiceImpl(PurchaseRepository purchaseRepository, ProductRepository productRepository, ClientRepository clientRepository) {
+        this.purchaseRepository = purchaseRepository;
         this.productRepository = productRepository;
         this.clientRepository = clientRepository;
 
     }
 
     @Override
-    public Compra createCompra(PurchaseRequestDTO purchaseRequest) {
+    public Purchase createPurchase(PurchaseRequestDTO purchaseRequest) {
         // Buscar cliente pelo CPF
         Client client = clientRepository.findByCpf(purchaseRequest.getCpf())
                 .orElseThrow(() -> new IllegalArgumentException("Cliente com CPF " + purchaseRequest.getCpf() + " não encontrado."));
@@ -56,24 +56,24 @@ public class CompraServiceImpl implements CompraService {
                 .mapToDouble(product -> product.getPrice().doubleValue())
                 .sum();
 
-        // Criar compra
-        Compra compra = new Compra();
-        compra.setClient(client);
-        compra.setProdutos(produtos);
-        compra.setTotal(total);
+        // Criar purchase
+        Purchase purchase = new Purchase();
+        purchase.setClient(client);
+        purchase.setProdutos(produtos);
+        purchase.setTotal(total);
 
-        return compraRepository.save(compra);
+        return purchaseRepository.save(purchase);
     }
 
     @Override
-    public Compra findCompraById(Long id) {
-        return compraRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Compra com ID " + id + " não encontrada."));
+    public Purchase findPurchaseById(Long id) {
+        return purchaseRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Purchase com ID " + id + " não encontrada."));
     }
 
     @Override
-    public List<Compra> findAllCompras() {
-        return compraRepository.findAll();
+    public List<Purchase> findAllPurchases() {
+        return purchaseRepository.findAll();
     }
 }
 
