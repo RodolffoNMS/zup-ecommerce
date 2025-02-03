@@ -1,7 +1,9 @@
-package com.zup.ecommerce.services;
+package com.zup.ecommerce.services.impl;
 
 import java.util.List;
 
+import com.zup.ecommerce.dtos.ClientRequestDTO;
+import com.zup.ecommerce.services.ClientService;
 import org.springframework.stereotype.Service;
 
 import com.zup.ecommerce.models.Client;
@@ -19,16 +21,27 @@ public class ClientServiceImp implements ClientService {
     }
 
     @Override
-    public Client createClient(Client clientToCreate) {
+    public Client createClient(ClientRequestDTO clientToCreate) {
 
         ValidationUtils.validateNotEmpty(clientToCreate.getName(), "Nome do Cliente");
         ValidationUtils.validateCpf(clientToCreate.getCpf());
         ValidationUtils.validateEmail(clientToCreate.getEmail());
+
         // Verifica se já existe um cliente com o mesmo CPF
         if (clientRepository.existsByCpf(clientToCreate.getCpf())) {
             throw new IllegalArgumentException("Já existe um cliente com este CPF.");
         }
-        return clientRepository.save(clientToCreate);
+        if (clientRepository.existsByEmail(clientToCreate.getEmail())) {
+            throw new IllegalArgumentException("Já existe um cliente com o email '" + clientToCreate.getEmail() + "'.");
+        }
+
+        // Converter ClientRequestDTO para Client
+        Client client = new Client();
+        client.setName(clientToCreate.getName());
+        client.setCpf(clientToCreate.getCpf());
+        client.setEmail(clientToCreate.getEmail());
+
+        return clientRepository.save(client);
     }
 
     @Override

@@ -1,24 +1,12 @@
-package com.zup.ecommerce.models;
-
-import jakarta.persistence.*;
+package com.zup.ecommerce.dtos;
 
 import java.math.BigDecimal;
 
-@Entity
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductResponseDTO {
     private Long id;
-
-    @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false, scale = 2)
     private BigDecimal price;
-
-    @Column(nullable = false)
-    private int amount;
+    private Integer amount;
 
     public Long getId() {
         return id;
@@ -44,11 +32,11 @@ public class Product {
         this.price = price;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 }

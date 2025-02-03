@@ -1,7 +1,9 @@
-package com.zup.ecommerce.services;
+package com.zup.ecommerce.services.impl;
 
 import java.util.List;
 
+import com.zup.ecommerce.dtos.ProductRequestDTO;
+import com.zup.ecommerce.services.ProductService;
 import com.zup.ecommerce.utils.ValidationUtils;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +21,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product productToCreate) {
+    public Product createProduct(ProductRequestDTO productToCreate) {
         ValidationUtils.validateNotEmpty(productToCreate.getName(), "Nome do Produto");
         ValidationUtils.validatePositive(productToCreate.getPrice(), "Preço do Produto");
         ValidationUtils.validateNonNegative(productToCreate.getAmount(), "Quantidade do Produto");
+
         if (productRepository.existsByNameIgnoreCase(productToCreate.getName())) {
             throw new IllegalArgumentException("Já existe um produto com este nome.");
         }
-        return productRepository.save(productToCreate);
+
+        // Converter ProductRequestDTO para Product
+        Product product = new Product();
+        product.setName(productToCreate.getName());
+        product.setPrice(productToCreate.getPrice());
+        product.setAmount(productToCreate.getAmount());
+
+        return productRepository.save(product);
     }
 
     @Override
     public Product findProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Produto de id: " + id + "não encontrado."));
+                .orElseThrow(() -> new ProductNotFoundException("Produto de id: " + id + " não encontrado."));
     }
 
     @Override
@@ -48,5 +58,3 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 }
-
-

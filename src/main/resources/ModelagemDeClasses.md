@@ -33,7 +33,7 @@ class Compra {
 class SistemaECommerce {
   - List~Produto~ produtos
   - List~Cliente~ clientes
-  - List~Compra~ compras
+  - List~Compra~ purchases
   + cadastrarProduto(Produto produto): void
   + cadastrarCliente(Cliente cliente): void
   + realizarCompra(String cpf, List~String~ nomesProdutos): void
@@ -49,9 +49,9 @@ SistemaECommerce "1" --> "*" Cliente : gerencia
 SistemaECommerce "1" --> "*" Compra : gerencia
 ```
 
-Adicionada a classe Compra para representar as compras realizadas.
+Adicionada a classe Compra para representar as purchases realizadas.
 
-O sistema agora gerencia compras e permite associar clientes e produtos às compras.
+O sistema agora gerencia purchases e permite associar clientes e produtos às purchases.
 
 
 
@@ -90,7 +90,7 @@ class Compra {
 class SistemaECommerce {
   - List~Produto~ produtos
   - List~Cliente~ clientes
-  - List~Compra~ compras
+  - List~Compra~ purchases
   + cadastrarProduto(Produto produto): void
   + cadastrarCliente(Cliente cliente): void
   + realizarCompra(String cpf, List~String~ nomesProdutos): void
@@ -107,8 +107,8 @@ SistemaECommerce "1" --> "*" Cliente : gerencia
 SistemaECommerce "1" --> "*" Compra : gerencia
 ```
 
-Expansão da funcionalidade de compras.
+Expansão da funcionalidade de purchases.
 
-Adicionado o método getComprasPorCliente para consultar compras específicas de um cliente.
+Adicionado o método getComprasPorCliente para consultar purchases específicas de um cliente.
 
 Regras de negócio como validação de estoque e redução de quantidade são implementadas no método realizarCompra.
