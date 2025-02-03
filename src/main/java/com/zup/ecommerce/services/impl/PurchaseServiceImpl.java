@@ -32,24 +32,27 @@ public class PurchaseServiceImpl implements PurchaseService {
         Client client = clientRepository.findByCpf(purchaseRequest.getCpf())
                 .orElseThrow(() -> new IllegalArgumentException("Cliente com CPF " + purchaseRequest.getCpf() + " não encontrado."));
 
-        // Buscar produtos pelo nome e validar estoque
+        // Buscar produtos pelo nome
         List<Product> produtos = purchaseRequest.getProdutos().stream()
-                .map(productName -> {
-                    Product product = productRepository.findByNameIgnoreCase(productName)
-                            .orElseThrow(() -> new IllegalArgumentException("Produto " + productName + " não encontrado."));
-
-                    // Verificar estoque
-                    if (product.getAmount() <= 0) {
-                        throw new IllegalArgumentException("Produto " + product.getName() + " está fora de estoque.");
-                    }
-
-                    // Atualizar estoque
-                    product.setAmount(product.getAmount() - 1);
-                    productRepository.save(product);
-
-                    return product;
-                })
+                .map(productName -> productRepository.findByNameIgnoreCase(productName)
+                        .orElseThrow(() -> new IllegalArgumentException("Produto " + productName + " não encontrado.")))
                 .toList();
+
+        // Validar estoque de todos os produtos
+        List<String> outOfStockProducts = produtos.stream()
+                .filter(product -> product.getAmount() <= 0)
+                .map(Product::getName)
+                .toList();
+
+        if (!outOfStockProducts.isEmpty()) {
+            throw new IllegalArgumentException("Produto(s) em falta: " + String.join(", ", outOfStockProducts));
+        }
+
+        // Atualizar estoque
+        produtos.forEach(product -> {
+            product.setAmount(product.getAmount() - 1);
+            productRepository.save(product);
+        });
 
         // Calcular total
         double total = produtos.stream()
@@ -64,6 +67,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         return purchaseRepository.save(purchase);
     }
+
+
 
     @Override
     public Purchase findPurchaseById(Long id) {

@@ -12,7 +12,7 @@
 	<artifactId>zup-ecommerce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>zup-ecommerce</name>
-	<description>Sistema de E-Commerce desenvolvido para simular o funcionamento de uma loja virtual, com foco em cadastro de produtos, clientes e compras.</description>
+	<description>Sistema de E-Commerce desenvolvido para simular o funcionamento de uma loja virtual, com foco em cadastro de produtos, clientes e purchases.</description>
 	<url/>
 	<licenses>
 		<license/>
