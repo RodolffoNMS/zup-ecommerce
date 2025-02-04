@@ -8,7 +8,8 @@ import com.zup.ecommerce.models.Client;
 public interface ClientService {
 
     Client createClient(ClientRequestDTO clientToCreate);
-    Client findClientById(Long Id);
     List<Client> findAllClients();
-   
+    Client updateClient(String cpf, ClientRequestDTO clientRequestDTO);
+    Client findClientByCpf(String cpf);
+
 }

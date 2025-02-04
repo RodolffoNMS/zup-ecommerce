@@ -7,12 +7,7 @@ import com.zup.ecommerce.dtos.ClientRequestDTO;
 import com.zup.ecommerce.dtos.ClientResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.zup.ecommerce.models.Client;
 import com.zup.ecommerce.services.ClientService;
@@ -34,9 +29,16 @@ public class ClientController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ClientResponseDTO> getClientById(@PathVariable Long id) {
-        Client client = clientService.findClientById(id);
+    @PutMapping("/{cpf}")
+    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable String cpf, @RequestBody ClientRequestDTO clientRequestDTO) {
+        Client updatedClient = clientService.updateClient(cpf, clientRequestDTO);
+        ClientResponseDTO responseDTO = convertToResponseDTO(updatedClient);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<ClientResponseDTO> getClientByCpf(@PathVariable String cpf) {
+        Client client = clientService.findClientByCpf(cpf);
         ClientResponseDTO responseDTO = convertToResponseDTO(client);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

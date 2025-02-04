@@ -43,9 +43,33 @@ public class ClientServiceImp implements ClientService {
     }
 
     @Override
-    public Client findClientById(Long id) {
-        return clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException("Cliente com ID " + id + " não encontrado"));
+    public Client updateClient(String cpf, ClientRequestDTO clientRequestDTO) {
+        // Validações de entrada
+        ValidationUtils.validateNotEmpty(clientRequestDTO.getName(), "Nome do Cliente");
+        ValidationUtils.validateEmail(clientRequestDTO.getEmail());
+
+        // Busca o cliente pelo CPF
+        Client client = clientRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente com CPF " + cpf + " não encontrado"));
+
+        // Verifica se o e-mail já está em uso por outro cliente
+        if (clientRepository.existsByEmail(clientRequestDTO.getEmail()) &&
+                !client.getEmail().equals(clientRequestDTO.getEmail())) {
+            throw new IllegalArgumentException("Já existe um cliente com o email '" + clientRequestDTO.getEmail() + "'.");
+        }
+
+        // Atualiza os campos do cliente
+        client.setName(clientRequestDTO.getName());
+        client.setEmail(clientRequestDTO.getEmail());
+
+        // Salva as alterações no banco de dados
+        return clientRepository.save(client);
+    }
+
+    @Override
+    public Client findClientByCpf(String cpf) {
+        return clientRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente com CPF " + cpf + " não encontrado"));
     }
 
     @Override
