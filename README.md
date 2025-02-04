@@ -176,12 +176,25 @@ src/
 **GET /api/client**
 #### Respostas:
 - ✅ 200 OK: Retorna a lista de clientes.
-### Buscar Cliente por ID
-**GET /api/client/{id}**
+### Buscar Cliente por CPF
+**GET /api/client/cpf/{CPF}**
 #### Respostas:
 - ✅ 200 OK: Retorna o cliente.
 - ❌ 404 Not Found: Cliente não encontrado.
+### Atualizar Cliente
+**PUT /api/client/{id}**
 
+**Body:**
+```json
+{
+  "name": "João Silva Atualizado",
+  "email": "joao.atualizado@email.com"
+}
+```
+#### Respostas:
+- ✅ 200 OK: Cliente atualizado com sucesso.
+- ❌ 400 Bad Request: Erro de validação (ex.: email duplicado).
+- ❌ 404 Not Found: Cliente não encontrado.
 ## 3. 🛒 Compras
 ### Realizar Compra
 **POST /api/purchase**
@@ -270,9 +283,3 @@ A aplicação utiliza o banco de dados em memória H2 para facilitar o desenvolv
 ## Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
 ## Desenvolvido com ☕ , ❤️ e Java.
-
-
-
-
-
-
