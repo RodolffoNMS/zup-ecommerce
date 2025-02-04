@@ -28,17 +28,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public Purchase createPurchase(PurchaseRequestDTO purchaseRequest) {
-        // Buscar cliente pelo CPF
         Client client = clientRepository.findByCpf(purchaseRequest.getCpf())
                 .orElseThrow(() -> new IllegalArgumentException("Cliente com CPF " + purchaseRequest.getCpf() + " não encontrado."));
 
-        // Buscar produtos pelo nome
         List<Product> produtos = purchaseRequest.getProdutos().stream()
                 .map(productName -> productRepository.findByNameIgnoreCase(productName)
                         .orElseThrow(() -> new IllegalArgumentException("Produto " + productName + " não encontrado.")))
                 .toList();
 
-        // Validar estoque de todos os produtos
         List<String> outOfStockProducts = produtos.stream()
                 .filter(product -> product.getAmount() <= 0)
                 .map(Product::getName)
@@ -48,18 +45,15 @@ public class PurchaseServiceImpl implements PurchaseService {
             throw new IllegalArgumentException("Produto(s) em falta: " + String.join(", ", outOfStockProducts));
         }
 
-        // Atualizar estoque
         produtos.forEach(product -> {
             product.setAmount(product.getAmount() - 1);
             productRepository.save(product);
         });
 
-        // Calcular total
         double total = produtos.stream()
                 .mapToDouble(product -> product.getPrice().doubleValue())
                 .sum();
 
-        // Criar purchase
         Purchase purchase = new Purchase();
         purchase.setClient(client);
         purchase.setProdutos(produtos);

@@ -30,7 +30,6 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("Já existe um produto com este nome.");
         }
 
-        // Converter ProductRequestDTO para Product
         Product product = new Product();
         product.setName(productToCreate.getName());
         product.setPrice(productToCreate.getPrice());

@@ -25,7 +25,6 @@ public class PurchaseController {
     public ResponseEntity<PurchaseResponseDTO> createPurchase(@RequestBody PurchaseRequestDTO purchaseRequest) {
         Purchase createdPurchase = purchaseService.createPurchase(purchaseRequest);
 
-        // Converter Purchase para PurchaseResponseDTO
         PurchaseResponseDTO responseDTO = new PurchaseResponseDTO();
         responseDTO.setId(createdPurchase.getId());
         responseDTO.setClientName(createdPurchase.getClient().getName());
@@ -39,7 +38,6 @@ public class PurchaseController {
     public ResponseEntity<PurchaseResponseDTO> getPurchaseById(@PathVariable Long id) {
         Purchase purchase = purchaseService.findPurchaseById(id);
 
-        // Converter Purchase para PurchaseResponseDTO
         PurchaseResponseDTO responseDTO = new PurchaseResponseDTO();
         responseDTO.setId(purchase.getId());
         responseDTO.setClientName(purchase.getClient().getName());
@@ -53,7 +51,6 @@ public class PurchaseController {
     public ResponseEntity<List<PurchaseResponseDTO>> getAllPurchase() {
         List<Purchase> purchases = purchaseService.findAllPurchases();
 
-        // Converter a lista de Compras para uma lista de PurchaseResponseDTO
         List<PurchaseResponseDTO> responseDTOs = purchases.stream().map(purchase -> {
             PurchaseResponseDTO responseDTO = new PurchaseResponseDTO();
             responseDTO.setId(purchase.getId());

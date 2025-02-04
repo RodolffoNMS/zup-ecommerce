@@ -27,7 +27,6 @@ public class ClientServiceImp implements ClientService {
         ValidationUtils.validateCpf(clientToCreate.getCpf());
         ValidationUtils.validateEmail(clientToCreate.getEmail());
 
-        // Verifica se já existe um cliente com o mesmo CPF
         if (clientRepository.existsByCpf(clientToCreate.getCpf())) {
             throw new IllegalArgumentException("Já existe um cliente com este CPF.");
         }
@@ -35,7 +34,6 @@ public class ClientServiceImp implements ClientService {
             throw new IllegalArgumentException("Já existe um cliente com o email '" + clientToCreate.getEmail() + "'.");
         }
 
-        // Converter ClientRequestDTO para Client
         Client client = new Client();
         client.setName(clientToCreate.getName());
         client.setCpf(clientToCreate.getCpf());

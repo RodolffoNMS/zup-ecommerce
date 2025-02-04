@@ -51,7 +51,6 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Método para converter Product para ProductResponseDTO
     private ProductResponseDTO convertToResponseDTO(Product product) {
         ProductResponseDTO responseDTO = new ProductResponseDTO();
         responseDTO.setId(product.getId());
